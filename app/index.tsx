@@ -1,8 +1,35 @@
 import { TaskCircle } from "@/src/components/TaskCircle";
-import React from "react";
-import { Text, View } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
 
-console.log("✅ App rendered!");
+export default function App() {
+    const [completed1, setCompleted1] = useState(false);
+    const [completed2, setCompleted2] = useState(true);
+    
+    return (
+    <View style={styles.container}>
+        <TaskCircle
+            emoji="🐾"
+            completed={completed1}
+            onPress={() => setCompleted1(!completed1)}
+        />
+        <TaskCircle
+            emoji="🐾"
+            completed={completed2}
+            onPress={() => setCompleted2(!completed2)}
+        />
+    </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#fff",
+    },
+});
 
 // export default function App() {
 //   useEffect(() => {
@@ -25,14 +52,3 @@ console.log("✅ App rendered!");
 //     };
 //     testStorage();
 //   }, []);
-
-
-export default function App() {
-    return (
-        <View style={{ padding: 50 }}>
-        <Text>Check console for storage test results</Text>
-        <TaskCircle emoji="💧" completed={false} />
-        <TaskCircle emoji="💧" completed={true} />
-        </View>
-    );
-}

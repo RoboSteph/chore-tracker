@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
 
 interface TaskCircleProps {
     emoji?: string;
@@ -9,75 +9,58 @@ interface TaskCircleProps {
 
 export const TaskCircle = ({ emoji, completed, onPress }: TaskCircleProps) => {
     return (
-        <Pressable onPress={onPress}>
-            <View style={{
-                    width: 80,
-                    height: 80,
-                    borderRadius: 40,
-                    borderWidth: 2,
-                    borderColor: completed ? "green" : "#d3d3d3",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: completed ? "#e0ffe0" : "#f0f0f0",
-                    position: "relative",
-                }}
-            >
-                {emoji ? (
-                    <Text 
-                        style={{
-                            fontSize: 32,
-                            opacity: completed ? 1 : 0.3, // Dimmed if not yet complete
-                        }}
-                    >
-                        {emoji}
-                    </Text>
-                    ) : null}
-                {completed && (
-                    <Text 
-                        style={{
-                            position: "absolute",
-                            right: 5,
-                            bottom: 5,
-                            fontSize: 20,
-                            color: "green",
-                        }}
-                    >
-                        ✅
-                    </Text>
-                )}
-            </View>
-        </Pressable>
+        <View style={styles.circleWrapper}>   
+            <Pressable onPress={onPress} style={{flex: 1}}>
+                <View style={[styles.circle, completed && styles.circleCompleted]}>
+                    {emoji ? (
+                        <Text style={[styles.emoji, !completed && styles.emojiDimmed]}>
+                            {emoji}
+                        </Text>
+                        ) : null}
+                    {completed && (
+                        <Text style={styles.checkmark}> ✅ </Text>
+                    )}
+                </View>
+            </Pressable>
+        </View>
     );
 };
 
+const CIRCLE_SIZE = Dimensions.get("window").width * 0.6; // 60% of screen width
+
 const styles = StyleSheet.create({
-    container: {
-        padding: 10,
-    },
     circle: {
-        width: 80,
-        height: 80,
-        borderRadius: 40,
+        flex: 1,
+        aspectRatio: 1,
+        borderRadius: 9999,
         borderWidth: 2,
-        borderColor: "#aaa",
+        borderColor: "#d3d3d3",
         justifyContent: "center",
         alignItems: "center",
         position: "relative",
-        backgroundColor: "blue",
+        backgroundColor: "#f0f0f0",
     },
     circleCompleted: {
-        borderColor: "#4CAF50",
+        backgroundColor: "#a4edb5",
+        borderColor: "#22b544",
     },
     emoji: {
-        fontSize: 32,
+        fontSize: CIRCLE_SIZE * 0.7,
+        opacity: 1,
+        alignItems: "center",
     },
     emojiDimmed: {
-        opacity: 0.5,
+        opacity: 0.2,
     },
     checkmark: {
         position: "absolute",
-        right: 0,
-        bottom: 0,
-        fontSize: 18,
+        right: "10%",
+        bottom: "10%",
+        fontSize: CIRCLE_SIZE * 0.2, // 20% of circle size
+    },
+    circleWrapper: {
+        width: CIRCLE_SIZE,
+        height: CIRCLE_SIZE,
+        marginVertical: 24, //space between circles
     },
 });
